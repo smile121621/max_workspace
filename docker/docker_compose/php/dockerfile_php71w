@@ -1,0 +1,34 @@
+# base image
+FROM docker.io/php:7.1.21-fpm
+
+# MAINTAINER
+MAINTAINER max_workspace@163.com
+
+# php extensions
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libxml2-dev \
+    libxslt1-dev \
+    && docker-php-ext-install gd \
+    && docker-php-ext-install soap \
+    && docker-php-ext-install xsl \
+    && docker-php-ext-install xmlrpc \
+    && docker-php-ext-install zip \
+    && docker-php-ext-install pcntl \
+    && docker-php-ext-install pdo_mysql \
+    && docker-php-ext-install mysqli \
+    && docker-php-ext-install bcmath \
+    && docker-php-ext-install sockets \
+    && docker-php-ext-install gettext \
+    && docker-php-ext-install shmop \
+    && docker-php-ext-install sysvsem \
+    && pecl install redis-3.1.4 \
+    && pecl install xdebug \
+    && docker-php-ext-enable redis xdebug
+
+
+# composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php \
+    && php -r "unlink('composer-setup.php');" \
+    && mv composer.phar /bin/composer

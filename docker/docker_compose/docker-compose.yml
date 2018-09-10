@@ -1,0 +1,30 @@
+version: "2"
+services:
+  vc_data:
+    image: alpine:latest
+    container_name: vc_data
+    volumes:
+      - /etc/nginx/conf.d/
+      - /usr/share/nginx/html/
+      - /data/
+
+  php:
+    build:
+      context: ./php
+      dockerfile: dockerfile_php71w
+    image: php71w
+    container_name: phpfpm
+    volumes_from:
+      - vc_data
+    ports:
+      - "9000"
+
+  nginx:
+    image: nginx:1.10.2
+    container_name: nginx
+    volumes_from:
+      - vc_data
+    links:
+      - php
+    ports:
+      - "80"
