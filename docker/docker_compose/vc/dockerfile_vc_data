@@ -1,8 +1,0 @@
-# base image
-FROM alpine:latest
-
-# MAINTAINER
-MAINTAINER max_workspace@163.com
-
-# volumes
-VOLUME ["/data","/etc/nginx/conf.d","/usr/share/nginx/html"]
